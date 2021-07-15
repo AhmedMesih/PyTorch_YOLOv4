@@ -3,8 +3,15 @@ import math
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-from mish_cuda import MishCuda as Mish
+try:
+    from mish_cuda import MishCuda as Mish
+
+except:
+    class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
+        def forward(self, x):
+            return F.mish(x)
 
 
 def autopad(k, p=None):  # kernel, padding
