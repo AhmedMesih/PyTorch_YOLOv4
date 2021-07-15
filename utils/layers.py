@@ -5,8 +5,15 @@ from utils.general import *
 import torch
 from torch import nn
 
-from mish_cuda import MishCuda as Mish
+import torch.nn.functional as F
 
+try:
+    from mish_cuda import MishCuda as Mish
+
+except:
+    class Mish(nn.Module):  # https://github.com/digantamisra98/Mish
+        def forward(self, x):
+            return F.mish(x)
 
 def make_divisible(v, divisor):
     # Function ensures all layers have a channel number that is divisible by 8
